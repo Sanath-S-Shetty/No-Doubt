@@ -1,10 +1,45 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:no_doubt/signup.dart';
-import 'package:no_doubt/option.dart';
+import 'signup.dart';
+//import 'package:no_doubt/option.dart';
 
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+    _createlogin createState() => _createlogin();
+}
+
+
+    class _createlogin extends State<LoginPage>{
+
+      final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  
+  
+   @override
+  void dispose() {
+   
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+   Future<void> justlogin() async {
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  } on FirebaseAuthException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.message ?? 'Login failed')),
+    );
+  }
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +58,10 @@ class LoginPage extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            buildTextField(Icons.email, 'Email'),
-            SizedBox(height: 10),
-            buildTextField(Icons.lock, 'Password', obscureText: true),
+             buildTextField(Icons.email, 'Email', emailController),
+              SizedBox(height: 10),
+           
+            buildTextField(Icons.lock, 'Password',passwordController, obscureText: true),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
@@ -42,11 +78,12 @@ class LoginPage extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
               ),
-              onPressed: () {
-                Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => option()),
-                        ); 
+              onPressed: () async {
+                // Navigator.push(
+                //           context,
+                //           MaterialPageRoute(builder: (context) => option()),
+                //         );
+                  await justlogin();
               },
               child: Text(
                 'LOGIN',
@@ -81,9 +118,11 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(IconData icon, String hint, {bool obscureText = false}) {
+  Widget buildTextField(IconData icon, String hint, TextEditingController controller, {bool obscureText = false}) {
     return TextField(
+       controller: controller,
       obscureText: obscureText,
+    
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.purpleAccent),

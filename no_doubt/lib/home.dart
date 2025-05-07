@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:no_doubt/askdoubtpage.dart';
-import 'package:no_doubt/option.dart';
+import 'askdoubtpage.dart';
+import 'option.dart';
+import 'login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 class homePage extends StatelessWidget {
@@ -32,10 +35,20 @@ class HomeScreen extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Icon(Icons.person_outline, color: Colors.black),
+            padding: const EdgeInsets.all(12.0),
+
+            child: GestureDetector(
+      onTap: () {
+       
+        FirebaseAuth.instance.signOut();
+         Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      },
+      child: const Icon(Icons.person_outline, color: Colors.black),
+    ),
           ),
         ],
       ),

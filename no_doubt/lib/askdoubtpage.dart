@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:no_doubt/option.dart';
-import 'package:no_doubt/home.dart';
+import 'option.dart';
+import 'home.dart';
 
 
 

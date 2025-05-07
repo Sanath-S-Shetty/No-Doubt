@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:no_doubt/askdoubtpage.dart';
-import 'package:no_doubt/home.dart';
+import 'askdoubtpage.dart';
+import 'home.dart';
 
 class option extends StatelessWidget {
   const option({super.key});
